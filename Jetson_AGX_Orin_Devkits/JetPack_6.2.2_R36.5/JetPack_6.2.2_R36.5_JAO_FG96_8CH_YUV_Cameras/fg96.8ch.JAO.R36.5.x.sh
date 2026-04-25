@@ -6,10 +6,10 @@
 COMMENT
 
 clear
-str_ver0="# R36 (release), REVISION: 4.0"
-str_ver3="# R36 (release), REVISION: 4.3"
-str_ver4="# R36 (release), REVISION: 4.4"
-str_ver7="# R36 (release), REVISION: 4.7"
+str_ver0="# R36 (release), REVISION: 5.0"
+str_ver3="# R36 (release), REVISION: 5.3"
+str_ver4="# R36 (release), REVISION: 5.4"
+str_ver7="# R36 (release), REVISION: 5.7"
 
 red_print() {
     echo -e "\e[1;31m$1\e[0m"
@@ -29,19 +29,11 @@ if [[ $str == *$str_ver0* ]]; then
 else
 	if [[ $str == *$str_ver3* ]]; then
 		echo $str_ver
-		green_print 'JetPack R36.4.3 is corret, JetPack版本匹配自动升级'
+		green_print 'JetPack R36.5.3 is corret, JetPack版本匹配自动升级'
 	else
 		if [[ $str == *$str_ver4* ]]; then
 			echo $str_ver
-			green_print 'JetPack R36.4.4 is corret, JetPack版本匹配自动升级'
-		else
-			if [[ $str == *$str_ver4* ]]; then
-				echo $str_ver
-				green_print 'JetPack R36.4.7 is corret, JetPack版本匹配自动升级'
-			else
-				red_print 'JetPack is not corret check and run again, JetPack版本不匹配,检查后再运行'
-				exit
-			fi
+			green_print 'JetPack R36.5.4 is corret, JetPack版本匹配自动升级'
 		fi
 	fi
 fi
@@ -56,6 +48,8 @@ sudo insmod /lib/modules/$(uname -r)/updates/drivers/media/i2c/fzcam.ko
 sudo depmod
 
 sudo cp fzcam_app/etc/fzcam_cfg.ini /etc/
+sudo rm /usr/local/bin/fzcam_cfg 
+sudo rm /usr/local/bin/fzcam_ui
 sudo cp fzcam_app/usr/local/bin/fzcam_cfg /usr/local/bin/
 sudo cp fzcam_app/usr/local/bin/fzcam_ui /usr/local/bin/
 sudo chmod +x /usr/local/bin/fzcam_ui
