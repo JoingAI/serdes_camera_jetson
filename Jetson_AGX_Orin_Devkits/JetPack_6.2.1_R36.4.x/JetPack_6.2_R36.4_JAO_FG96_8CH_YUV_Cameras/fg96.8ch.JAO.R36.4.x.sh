@@ -35,7 +35,7 @@ else
 			echo $str_ver
 			green_print 'JetPack R36.4.4 is corret, JetPack版本匹配自动升级'
 		else
-			if [[ $str == *$str_ver4* ]]; then
+			if [[ $str == *$str_ver7* ]]; then
 				echo $str_ver
 				green_print 'JetPack R36.4.7 is corret, JetPack版本匹配自动升级'
 			else
