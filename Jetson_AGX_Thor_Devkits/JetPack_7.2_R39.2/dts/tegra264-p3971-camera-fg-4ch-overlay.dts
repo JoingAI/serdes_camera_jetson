@@ -159,7 +159,7 @@
 						drivernode0 {
 							status = "okay";
 							pcl_id = "v4l2_sensor";
-							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6d0000/fzcam_3a@3a";
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6a0000/fzcam_3c@3c";
 						};
 					};
 					module3 {
@@ -170,7 +170,7 @@
 						drivernode0 {
 							status = "okay";
 							pcl_id = "v4l2_sensor";
-							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6d0000/fzcam_3b@3b";
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6a0000/fzcam_3d@3d";
 						};
 					};
 					module4 {
@@ -181,7 +181,7 @@
 						drivernode0 {
 							status = "okay";
 							pcl_id = "v4l2_sensor";
-							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6a0000/fzcam_3c@3c";
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6d0000/fzcam_3a@3a";
 						};
 					};
 					module5 {
@@ -192,7 +192,7 @@
 						drivernode0 {
 							status = "okay";
 							pcl_id = "v4l2_sensor";
-							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6a0000/fzcam_3d@3d";
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6d0000/fzcam_3b@3b";
 						};
 					};
 					module6 {
@@ -306,7 +306,7 @@
 									reg = <0>;
 									fzcam_csi_in2: endpoint@4 {
 										status = "okay";
-										port-index = <2>;
+										port-index = <0>;
 										bus-width = <4>;
 										remote-endpoint = <&fzcam_out2>;
 									};
@@ -333,7 +333,7 @@
 									reg = <0>;
 									fzcam_csi_in3: endpoint@6 {
 										status = "okay";
-										port-index = <2>;
+										port-index = <0>;
 										bus-width = <4>;
 										remote-endpoint = <&fzcam_out3>;
 									};
