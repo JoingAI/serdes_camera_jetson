@@ -1,0 +1,585 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+/* SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION & AFFILIATES. All rights reserved. */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/clock/tegra264-clk.h>
+#include <dt-bindings/gpio/tegra264-gpio.h>
+#include <dt-bindings/pinctrl/pinctrl-tegra.h>
+
+/* camera control gpio definitions */
+#define CAM1_PWDN	TEGRA264_MAIN_GPIO(V, 5)  //Pin93 -- MAX9296_1 PWDN/17
+#define CAM2_PWDN	TEGRA264_MAIN_GPIO(V, 2)  //Pin95 -- MAX9296_2 PWDN/18
+
+#define CAM_LANES 4
+#define CAM_LANES_STRING "4"
+
+#define JETSON_COMPATIBLE "nvidia,p3971-0089+p3834-0008", "nvidia,p3971-0050+p3834-0005", "nvidia,p3971-0080+p3834-0008", "nvidia,p3834-0008", "nvidia,tegra264"
+
+/ {
+	overlay-name = "Jetson Camera Thor_FG_2CH";
+	jetson-header-name = "Jetson AGX CSI Connector";
+	compatible = JETSON_COMPATIBLE;
+
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			status = "okay";
+			tegra-capture-vi {
+				status = "okay";
+				num-channels = <4>;
+				ports {
+					status = "okay";
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						status = "okay";
+						reg = <0>;
+						fzcam_vi_in0: endpoint {
+							status = "okay";
+							vc-id = <0>;
+							port-index = <0>;
+							bus-width = <4>;
+							remote-endpoint = <&fzcam_csi_out0>;
+						};
+					};
+					port@1 {
+						status = "okay";
+						reg = <1>;
+						fzcam_vi_in1: endpoint {
+							status = "okay";
+							vc-id = <1>;
+							port-index = <0>;
+							bus-width = <4>;
+							remote-endpoint = <&fzcam_csi_out1>;
+						};
+					};
+					port@2 {
+						status = "okay";
+						reg = <2>;
+						fzcam_vi_in2: endpoint {
+							status = "okay";
+							vc-id = <0>;
+							port-index = <2>;
+							bus-width = <4>;
+							remote-endpoint = <&fzcam_csi_out2>;
+						};
+					};
+					port@3 {
+						status = "okay";
+						reg = <3>;
+						fzcam_vi_in3: endpoint {
+							status = "okay";
+							vc-id = <1>;
+							port-index = <2>;
+							bus-width = <4>;
+							remote-endpoint = <&fzcam_csi_out3>;
+						};
+					};
+				};
+			};
+
+			tegra-camera-platform {
+				status = "okay";
+				compatible = "nvidia, tegra-camera-platform";
+				modules {
+					status = "okay";
+					module0 {
+						status = "okay";
+						badge = "fzcam_frontl";
+						position = "frontl";
+						orientation = "1";
+						drivernode0 {
+							status = "okay";
+							pcl_id = "v4l2_sensor";
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6a0000/fzcam_3a@3a";
+						};
+					};
+					module1 {
+						status = "okay";
+						badge = "fzcam_frontr";
+						position = "frontr";
+						orientation = "1";
+						drivernode0 {
+							status = "okay";
+							pcl_id = "v4l2_sensor";
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6a0000/fzcam_3b@3b";
+						};
+					};
+					module2 {
+						status = "okay";
+						badge = "fzcam_frontu";
+						position = "frontu";
+						orientation = "1";
+						drivernode0 {
+							status = "okay";
+							pcl_id = "v4l2_sensor";
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6d0000/fzcam_3a@3a";
+						};
+					};
+					module3 {
+						status = "okay";
+						badge = "fzcam_frontd";
+						position = "frontd";
+						orientation = "1";
+						drivernode0 {
+							status = "okay";
+							pcl_id = "v4l2_sensor";
+							sysfs-device-tree = "/sys/firmware/devicetree/base/bus@0/i2c@810c6d0000/fzcam_3b@3b";
+						};
+					};
+				};
+			};
+
+			bus@0 {
+				status = "okay";
+				/*
+				gpio@810c300000 {
+					camera-control-output-low {
+						gpio-hog;
+						output-low;
+						gpios = <CAM1_PWDN 0 CAM2_PWDN 0>;
+						label = "cam1-pwdn", "cam2-pwdn";
+					};
+				};
+				*/
+
+				host1x@8181200000 {
+					status = "okay";
+					nvcsi@8188000000 {
+						status = "okay";
+						num-channels = <4>;
+						#address-cells = <1>;
+						#size-cells = <0>;
+						channel@0 {
+							status = "okay";
+							reg = <0>;
+							ports {
+								status = "okay";
+								#address-cells = <1>;
+								#size-cells = <0>;
+								port@0 {
+									status = "okay";
+									reg = <0>;
+									fzcam_csi_in0: endpoint@0 {
+										status = "okay";
+										port-index = <0>;
+										bus-width = <4>;
+										remote-endpoint = <&fzcam_out0>;
+									};
+								};
+								port@1 {
+									status = "okay";
+									reg = <1>;
+									fzcam_csi_out0: endpoint@1 {
+										status = "okay";
+										remote-endpoint = <&fzcam_vi_in0>;
+									};
+								};
+							};
+						};
+						channel@1 {
+							status = "okay";
+							reg = <1>;
+							ports {
+								status = "okay";
+								#address-cells = <1>;
+								#size-cells = <0>;
+								port@0 {
+									status = "okay";
+									reg = <0>;
+									fzcam_csi_in1: endpoint@2 {
+										status = "okay";
+										port-index = <0>;
+										bus-width = <4>;
+										remote-endpoint = <&fzcam_out1>;
+									};
+								};
+								port@1 {
+									status = "okay";
+									reg = <1>;
+									fzcam_csi_out1: endpoint@3 {
+										status = "okay";
+										remote-endpoint = <&fzcam_vi_in1>;
+									};
+								};
+							};
+						};
+						channel@2 {
+							status = "okay";
+							reg = <2>;
+							ports {
+								status = "okay";
+								#address-cells = <1>;
+								#size-cells = <0>;
+								port@0 {
+									status = "okay";
+									reg = <0>;
+									fzcam_csi_in2: endpoint@4 {
+										status = "okay";
+										port-index = <2>;
+										bus-width = <4>;
+										remote-endpoint = <&fzcam_out2>;
+									};
+								};
+								port@1 {
+									status = "okay";
+									reg = <1>;
+									fzcam_csi_out2: endpoint@5 {
+										status = "okay";
+										remote-endpoint = <&fzcam_vi_in2>;
+									};
+								};
+							};
+						};
+						channel@3 {
+							status = "okay";
+							reg = <3>;
+							ports {
+								status = "okay";
+								#address-cells = <1>;
+								#size-cells = <0>;
+								port@0 {
+									status = "okay";
+									reg = <0>;
+									fzcam_csi_in3: endpoint@6 {
+										status = "okay";
+										port-index = <2>;
+										bus-width = <4>;
+										remote-endpoint = <&fzcam_out3>;
+									};
+								};
+								port@1 {
+									status = "okay";
+									reg = <1>;
+									fzcam_csi_out3: endpoint@7 {
+										status = "okay";
+										remote-endpoint = <&fzcam_vi_in3>;
+									};
+								};
+							};
+						};
+					};
+				};
+
+				i2c@810c6a0000 { //Bus-9
+					status = "okay";
+					clock-frequency = <400000>;
+					fzcam_3b@3b {
+						status = "okay";
+						compatible = "nvidia,fzcam";
+						reg = <0x3b>;
+						devnode = "video1";
+						sensor_model ="fzcam";
+
+						/* Define any required hw resources needed by driver */
+						/* ie. clocks, io pins, power sources */
+						clocks = <&bpmp TEGRA264_CLK_EXTPERIPH1>,
+								<&bpmp TEGRA264_CLK_EXTPERIPH1>;
+						clock-names = "extperiph1", "pllp_grtba";
+						mclk = "extperiph1";
+
+						mode0 {
+							mclk_khz = "37125";
+							num_lanes = "4";
+							tegra_sinterface = "serial_c";
+							vc_id = "1";
+
+							discontinuous_clk = "no";
+							dpcm_enable = "false";
+							cil_settletime = "0";
+
+							csi_pixel_bit_depth = "16";
+							mode_type = "yuv";
+							pixel_phase = "uyvy";
+
+							active_w = "3840";
+							active_h = "2160";
+							readout_orientation = "0";
+							line_length = "4400";
+							inherent_gain = "1";
+
+							pix_clk_hz = "74250000";
+							serdes_pix_clk_hz = "375000000";
+
+							gain_factor = "10";
+							min_gain_val = "0"; /* 0dB */
+							max_gain_val = "480"; /* 48dB */
+							step_gain_val = "3"; /* 0.3 */
+							default_gain = "0";
+
+							framerate_factor = "1000000";
+							min_framerate = "30000000"; /* 1.5 */
+							max_framerate = "30000000"; /* 30 */
+							step_framerate = "1";
+							default_framerate= "30000000";
+
+							exposure_factor = "1000000";
+							min_exp_time = "30"; /* us */
+							max_exp_time = "660000"; /* us */
+							step_exp_time = "1";
+							default_exp_time = "33334";/* us */
+
+							embedded_metadata_height = "0";
+						};
+						ports {
+							port@0 {
+								fzcam_out5: endpoint {
+									status = "okay";
+									vc-id = <1>;
+									port-index = <2>;
+									bus-width = <4>;
+									remote-endpoint = <&fzcam_csi_in5>;
+								};
+							};
+						};
+					};
+					fzcam_3a@3a {
+						status = "okay";
+						compatible = "nvidia,fzcam";
+						reg = <0x3a>;
+						devnode = "video0";
+						sensor_model ="fzcam";
+						//reset-gpios = <&gpio_main CAM1_PWDN GPIO_ACTIVE_HIGH>;
+						//poc-gpios = <&gpio_main CAM12V1_POC GPIO_ACTIVE_HIGH>;
+
+						/* Define any required hw resources needed by driver */
+						/* ie. clocks, io pins, power sources */
+						clocks = <&bpmp TEGRA264_CLK_EXTPERIPH1>,
+								<&bpmp TEGRA264_CLK_EXTPERIPH1>;
+						clock-names = "extperiph1", "pllp_grtba";
+						mclk = "extperiph1";
+
+						mode0 {
+							mclk_khz = "37125";
+							num_lanes = "4";
+							tegra_sinterface = "serial_c";
+							vc_id = "0";
+
+							discontinuous_clk = "no";
+							dpcm_enable = "false";
+							cil_settletime = "0";
+
+							csi_pixel_bit_depth = "16";
+							mode_type = "yuv";
+							pixel_phase = "uyvy";
+
+							active_w = "3840";
+							active_h = "2160";
+							readout_orientation = "0";
+							line_length = "4400";
+							inherent_gain = "1";
+
+							pix_clk_hz = "74250000";
+							serdes_pix_clk_hz = "375000000";
+
+							gain_factor = "10";
+							min_gain_val = "0"; /* 0dB */
+							max_gain_val = "480"; /* 48dB */
+							step_gain_val = "3"; /* 0.3 */
+							default_gain = "0";
+
+							framerate_factor = "1000000";
+							min_framerate = "30000000"; /* 1.5 */
+							max_framerate = "30000000"; /* 30 */
+							step_framerate = "1";
+							default_framerate= "30000000";
+
+							exposure_factor = "1000000";
+							min_exp_time = "30"; /* us */
+							max_exp_time = "660000"; /* us */
+							step_exp_time = "1";
+							default_exp_time = "33334";/* us */
+
+							embedded_metadata_height = "0";
+						};
+						ports {
+							port@0 {
+								fzcam_out4: endpoint {
+									status = "okay";
+									vc-id = <0>;
+									port-index = <2>;
+									bus-width = <4>;
+									remote-endpoint = <&fzcam_csi_in4>;
+									};
+								};
+							};
+					};
+				};
+				i2c@810c6d0000 { //Bus-12
+					status = "okay";
+					clock-frequency = <400000>;
+					fzcam_3b@3b {
+						status = "okay";
+						compatible = "nvidia,fzcam";
+						reg = <0x3b>;
+						devnode = "video5";
+						sensor_model ="fzcam";
+
+						/* Define any required hw resources needed by driver */
+						/* ie. clocks, io pins, power sources */
+						clocks = <&bpmp TEGRA264_CLK_EXTPERIPH1>,
+								<&bpmp TEGRA264_CLK_EXTPERIPH1>;
+						clock-names = "extperiph1", "pllp_grtba";
+						mclk = "extperiph1";
+
+						mode0 {
+							mclk_khz = "37125";
+							num_lanes = "4";
+							tegra_sinterface = "serial_a";
+							vc_id = "1";
+
+							discontinuous_clk = "no";
+							dpcm_enable = "false";
+							cil_settletime = "0";
+
+							csi_pixel_bit_depth = "16";
+							mode_type = "yuv";
+							pixel_phase = "uyvy";
+
+							active_w = "3840";
+							active_h = "2160";
+							readout_orientation = "0";
+							line_length = "4400";
+							inherent_gain = "1";
+
+							pix_clk_hz = "74250000";
+							serdes_pix_clk_hz = "375000000";
+
+							gain_factor = "10";
+							min_gain_val = "0"; /* 0dB */
+							max_gain_val = "480"; /* 48dB */
+							step_gain_val = "3"; /* 0.3 */
+							default_gain = "0";
+
+							framerate_factor = "1000000";
+							min_framerate = "30000000"; /* 1.5 */
+							max_framerate = "30000000"; /* 30 */
+							step_framerate = "1";
+							default_framerate= "30000000";
+
+							exposure_factor = "1000000";
+							min_exp_time = "30"; /* us */
+							max_exp_time = "660000"; /* us */
+							step_exp_time = "1";
+							default_exp_time = "33334";/* us */
+
+							embedded_metadata_height = "0";
+						};
+						ports {
+							port@0 {
+								fzcam_out1: endpoint {
+									status = "okay";
+									vc-id = <1>;
+									port-index = <0>;
+									bus-width = <4>;
+									remote-endpoint = <&fzcam_csi_in1>;
+								};
+							};
+						};
+					};
+					fzcam_3a@3a {
+						status = "okay";
+						compatible = "nvidia,fzcam";
+						reg = <0x3a>;
+						devnode = "video4";
+						sensor_model ="fzcam";
+						//reset-gpios = <&gpio_main CAM1_PWDN GPIO_ACTIVE_HIGH>;
+						//poc-gpios = <&gpio_main CAM12V1_POC GPIO_ACTIVE_HIGH>;
+
+						/* Define any required hw resources needed by driver */
+						/* ie. clocks, io pins, power sources */
+						clocks = <&bpmp TEGRA264_CLK_EXTPERIPH1>,
+								<&bpmp TEGRA264_CLK_EXTPERIPH1>;
+						clock-names = "extperiph1", "pllp_grtba";
+						mclk = "extperiph1";
+
+						mode0 {
+							mclk_khz = "37125";
+							num_lanes = "4";
+							tegra_sinterface = "serial_a";
+							vc_id = "0";
+
+							discontinuous_clk = "no";
+							dpcm_enable = "false";
+							cil_settletime = "0";
+
+							csi_pixel_bit_depth = "16";
+							mode_type = "yuv";
+							pixel_phase = "uyvy";
+
+							active_w = "3840";
+							active_h = "2160";
+							readout_orientation = "0";
+							line_length = "4400";
+							inherent_gain = "1";
+
+							pix_clk_hz = "74250000";
+							serdes_pix_clk_hz = "375000000";
+
+							gain_factor = "10";
+							min_gain_val = "0"; /* 0dB */
+							max_gain_val = "480"; /* 48dB */
+							step_gain_val = "3"; /* 0.3 */
+							default_gain = "0";
+
+							framerate_factor = "1000000";
+							min_framerate = "30000000"; /* 1.5 */
+							max_framerate = "30000000"; /* 30 */
+							step_framerate = "1";
+							default_framerate= "30000000";
+
+							exposure_factor = "1000000";
+							min_exp_time = "30"; /* us */
+							max_exp_time = "660000"; /* us */
+							step_exp_time = "1";
+							default_exp_time = "33334";/* us */
+
+							embedded_metadata_height = "0";
+						};
+						ports {
+							port@0 {
+								fzcam_out0: endpoint {
+									status = "okay";
+									vc-id = <0>;
+									port-index = <0>;
+									bus-width = <4>;
+									remote-endpoint = <&fzcam_csi_in0>;
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+
+	/*
+	fragment@1 {
+		target = <&padctl_main>;
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&jetson_io_pinmux>;
+
+			jetson_io_pinmux: exp-header-pinmux {
+				// enable i2c9 pinmux
+				gen9_i2c_scl_pg3 {
+					nvidia,pins = "gen9_i2c_scl_pg3";
+					nvidia,function = "i2c9_clk";
+					nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+					nvidia,tristate = <TEGRA_PIN_DISABLE>;
+					nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+				};
+				gen9_i2c_sda_pg4 {
+					nvidia,pins = "gen9_i2c_sda_pg4";
+					nvidia,function = "i2c9_dat";
+					nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+					nvidia,tristate = <TEGRA_PIN_DISABLE>;
+					nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+				};
+			};
+		};
+	};
+	*/
+};
