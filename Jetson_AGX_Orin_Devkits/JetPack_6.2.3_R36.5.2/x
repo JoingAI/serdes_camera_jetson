@@ -1,0 +1,5 @@
+find . -depth -type d -name '*5.15.185*' -exec sh -c '
+  for p do
+    n=${p##*/}; mv -v "$p" "${p%/*}/${n//5.15.185/5.15.199}"
+  done
+' sh {} +
