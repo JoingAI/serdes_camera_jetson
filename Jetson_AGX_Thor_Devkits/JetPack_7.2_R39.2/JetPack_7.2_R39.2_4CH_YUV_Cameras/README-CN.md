@@ -24,6 +24,34 @@
   - `fzcam_app/etc/fzcam_cfg.ini`
   - `fzcam_app/fzcam_cfg.service`
 
+- 刷机QSPI 使能I2C-BUS9 在pinmux dtsi添加
+  ```
+  Linux_for_Tegra\bootloader\tegra264-mb1-bct-pinmux-p3834-xxxx-p4071-0000.dtsi
+    gen9_i2c_scl_pg3 {
+      nvidia,pins = "gen9_i2c_scl_pg3";
+      nvidia,function = "i2c9_clk";
+      nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+      nvidia,tristate = <TEGRA_PIN_DISABLE>;
+      nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+      nvidia,drv-type = <TEGRA_PIN_1X_DRIVER>;
+      nvidia,e-io-od = <TEGRA_PIN_DISABLE>;
+      nvidia,e-lpbk = <TEGRA_PIN_DISABLE>;
+    };	
+    gen9_i2c_sda_pg4 {
+      nvidia,pins = "gen9_i2c_sda_pg4";
+      nvidia,function = "i2c9_dat";
+      nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+      nvidia,tristate = <TEGRA_PIN_DISABLE>;
+      nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+      nvidia,drv-type = <TEGRA_PIN_1X_DRIVER>;
+      nvidia,e-io-od = <TEGRA_PIN_DISABLE>;
+      nvidia,e-lpbk = <TEGRA_PIN_DISABLE>;
+    };
+    
+  #Flash qspi
+  sudo ./l4t_initrd_flash.sh --qspi-only jetson-agx-thor-devkit internal
+  ```
+  
 ## 3. 在 Jetson 上执行升级
 
 将整个目录拷贝到 Jetson（任选一种方式）：
